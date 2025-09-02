@@ -1,15 +1,21 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  direction: rtl;
-  text-align: center;
-  padding: 40px;
-  transition: background 0.3s, color 0.3s;
+  background: #f4f4f4;
+  color: #333;
+  padding: 20px;
 }
 
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
 
@@ -17,24 +23,140 @@ header {
   font-weight: bold;
 }
 
-.container {
+#toggleDarkMode {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Form */
+.form-section {
   background: #fff;
   padding: 20px;
-  border-radius: 12px;
-  max-width: 500px;
-  margin: auto;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.form-section h1 {
+  margin-bottom: 15px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 input, button {
-  margin: 10px 0;
-  padding: 12px;
-  width: 90%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 10px;
   font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
+input {
+  text-align: center;
+}
+
+button {
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* Table */
+.table-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.table-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+th {
+  background: #007bff;
+  color: white;
+}
+
+/* Dark Mode */
+body.dark {
+  background: #121212;
+  color: #eaeaea;
+}
+
+body.dark .form-section,
+body.dark .table-section {
+  background: #1e1e1e;
+}
+
+body.dark table th {
+  background: #333;
+}
+
+body.dark .table-section table tr:last-child {
+  background: #2a2a2a;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  input, button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  th, td {
+    font-size: 14px;
+    padding: 6px;
+  }
+}
+
+/* Print */
+@media print {
+  header, .table-actions, .form-section {
+    display: none;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  table {
+    width: 100%;
+    border: 1px solid black;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+}
 input {
   text-align: center;
 }
