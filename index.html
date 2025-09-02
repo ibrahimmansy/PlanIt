@@ -1,35 +1,55 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Installment Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlanIt</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Developer Name -->
   <header>
-    <span class="dev-name">Developer: Ebrahim Mansy</span>
-    <button id="themeToggle">🌙 الوضع الليلي</button>
+    <span class="dev-name">Developer: Ibrahim Mansy</span>
+    <button id="toggleDarkMode">🌙</button>
   </header>
 
-  <div class="container">
-    <h2>حاسبة تقسيط</h2>
-    <input type="number" id="price" placeholder="أدخل سعر (جنيه)">
-    <input type="number" id="months" placeholder="عدد الشهور (مثال: 12)">
-    <input type="number" id="interest" placeholder="نسبة الفائدة % (مثال: 20)">
-    <button onclick="calculate()">احسب القسط</button>
-    <button onclick="downloadTable()">تحميل الجدول</button>
-    <div class="result" id="output"></div>
-    <table id="installmentTable">
-      <thead>
-        <tr>
-          <th>الشهر</th>
-          <th>القسط الشهري</th>
-          <th>المتبقي</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+  <!-- Form -->
+  <section class="form-section">
+    <h1>Installment Calculator</h1>
+    <form id="installmentForm">
+      <label>Course Price:</label>
+      <input type="number" id="price" required placeholder="Enter price">
+
+      <label>Months:</label>
+      <input type="number" id="months" required placeholder="Enter months">
+
+      <label>Interest Rate (%):</label>
+      <input type="number" id="interest" required placeholder="Enter interest">
+
+      <button type="submit">Calculate</button>
+    </form>
+  </section>
+
+  <!-- Result Table -->
+  <section class="table-section">
+    <div class="table-actions">
+      <button id="downloadCSV">Download CSV</button>
+      <button id="printTable">Print Table</button>
+      <button id="resetTable">مسح البيانات</button>
+    </div>
+    <div class="table-wrapper">
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Installment</th>
+            <th>Remaining</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
 
   <script src="script.js"></script>
 </body>
