@@ -1,64 +1,86 @@
-function calculate() {
+// Dark Mode Toggle
+const toggleDark = document.getElementById("toggleDarkMode");
+toggleDark.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+});
+
+// Load Dark Mode
+if (localStorage.getItem("darkMode") === "true") {
+  document.body.classList.add("dark");
+}
+
+// Form Submit
+document.getElementById("installmentForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
   const price = parseFloat(document.getElementById("price").value);
   const months = parseInt(document.getElementById("months").value);
-  const interestRate = parseFloat(document.getElementById("interest").value);
-  const output = document.getElementById("output");
-  const tbody = document.querySelector("#installmentTable tbody");
+  const interest = parseFloat(document.getElementById("interest").value);
 
-  if (isNaN(price) || isNaN(months) || isNaN(interestRate)) {
-    output.innerText = "❌ من فضلك أدخل جميع القيم.";
-    return;
-  }
+  const total = price + (price * (interest / 100));
+  const installment = (total / months).toFixed(2);
 
-  const totalInterest = price * (interestRate / 100);
-  const total = price + totalInterest;
-  const monthly = total / months;
-
-  output.innerHTML = `
-    ✅ إجمالي المبلغ بعد الفائدة: ${total.toFixed(2)} جنيه<br>
-    💰 القسط الشهري: ${monthly.toFixed(2)} جنيه
-  `;
-
+  const tbody = document.querySelector("#resultTable tbody");
   tbody.innerHTML = "";
+
   let remaining = total;
+  let totalPaid = 0;
 
   for (let i = 1; i <= months; i++) {
-    remaining -= monthly;
-    const row = `<tr>
-      <td>${i}</td>
-      <td>${monthly.toFixed(2)} جنيه</td>
-      <td>${remaining > 0 ? remaining.toFixed(2) : 0} جنيه</td>
-    </tr>`;
+    remaining -= installment;
+    totalPaid += parseFloat(installment);
+    const row = `
+      <tr>
+        <td>${i}</td>
+        <td>${installment}</td>
+        <td>${remaining.toFixed(2)}</td>
+      </tr>
+    `;
     tbody.innerHTML += row;
   }
-}
 
-function downloadTable() {
-  const table = document.getElementById("installmentTable").outerHTML;
-  const blob = new Blob([table], { type: "text/html" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "installment-table.html";
-  link.click();
-}
+  // Add final totals row
+  const finalRow = `
+    <tr style="font-weight:bold; background:#f0f0f0;">
+      <td>Total</td>
+      <td>${totalPaid.toFixed(2)}</td>
+      <td>${remaining.toFixed(2)}</td>
+    </tr>
+  `;
+  tbody.innerHTML += finalRow;
+});
 
-// 🌙 وضع ليلي
-const themeToggle = document.getElementById("themeToggle");
-const body = document.body;
+// Download CSV
+document.getElementById("downloadCSV").addEventListener("click", () => {
+  const rows = document.querySelectorAll("table tr");
+  let csv = [];
 
-// لو فيه وضع محفوظ في localStorage
-if (localStorage.getItem("theme") === "dark") {
-  body.classList.add("dark");
-  themeToggle.textContent = "☀️ الوضع النهاري";
-}
+  rows.forEach(row => {
+    const cols = row.querySelectorAll("th, td");
+    const rowData = [];
+    cols.forEach(col => rowData.push(col.innerText));
+    csv.push(rowData.join(","));
+  });
 
-themeToggle.addEventListener("click", () => {
-  body.classList.toggle("dark");
-  if (body.classList.contains("dark")) {
-    localStorage.setItem("theme", "dark");
-    themeToggle.textContent = "☀️ الوضع النهاري";
-  } else {
-    localStorage.setItem("theme", "light");
-    themeToggle.textContent = "🌙 الوضع الليلي";
-  }
+  const blob = new Blob([csv.join("\n")], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.setAttribute("href", url);
+  a.setAttribute("download", "installments.csv");
+  a.click();
+});
+
+// Print Table
+document.getElementById("printTable").addEventListener("click", () => {
+  window.print();
+});
+
+// Reset Table
+document.getElementById("resetTable").addEventListener("click", () => {
+  document.getElementById("price").value = "";
+  document.getElementById("months").value = "";
+  document.getElementById("interest").value = "";
+  document.querySelector("#resultTable tbody").innerHTML = "";
 });
